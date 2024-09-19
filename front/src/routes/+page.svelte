@@ -1,2 +1,23 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    let teste = 'Isso daqui é um Teste!';
+    let count = 0;
+
+    function increment() {
+		count += 1;
+	}
+</script>
+
+<h1 class="classeTeste"> {teste} </h1>
+
+<button on:click={increment}>
+	Clicked {count}
+	{count === 1 ? 'time' : 'times'}
+</button>
+
+<style>
+    .classeTeste {
+        color: #fad45f;
+        background-color: black;
+        text-align: center;
+    }
+</style>
