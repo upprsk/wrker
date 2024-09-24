@@ -46,12 +46,6 @@ export const zPollSchema = zModelBase.extend({
   description: z.any(),
   open: z.boolean(),
   closingDate: z.string().transform(toDateTime),
-  // closingDate: z.string().transform(d => {
-  //   const [date, time] = d.split(' ')
-  //   console.log({ d, date, time })
-  //
-  //   return date + 'T' + time
-  // }),
   audience: z.string().array(),
   anonymous: z.boolean(),
 });
