@@ -30,6 +30,18 @@ func main() {
 		return nil
 	})
 
+	app.OnRecordAfterCreateRequest("polls").Add(func(e *core.RecordCreateEvent) error {
+		admin, _ := e.HttpContext.Get(apis.ContextAdminKey).(*models.Admin)
+		if admin != nil {
+			return nil // ignore for admins
+		}
+
+		info := apis.RequestInfo(e.HttpContext)
+		e.Record.Set("owner", info.AuthRecord.Id)
+
+		return nil
+	})
+
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
