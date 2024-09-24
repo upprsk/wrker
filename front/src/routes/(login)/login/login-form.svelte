@@ -43,7 +43,9 @@
 </script>
 
 <form class="card-body" method="POST" use:enhance>
-  <h4 class="card-title">Registrar</h4>
+  <h4 class="card-title">Login</h4>
+
+  <p>Nao tem uma conta? <a href="/register" class="link">Crie aqui</a>!</p>
 
   <label class="form-control w-full max-w-xs">
     <Field {form} name="email">

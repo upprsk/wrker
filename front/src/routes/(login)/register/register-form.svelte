@@ -37,6 +37,8 @@
 <form class="card-body" method="POST" use:enhance>
   <h4 class="card-title">Registrar</h4>
 
+  <p>Ja tem uma conta? <a href="/login" class="link">Entre aqui</a>!</p>
+
   <label class="form-control w-full max-w-xs">
     <Field {form} name="email">
       <Control let:attrs>
