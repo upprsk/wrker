@@ -1,9 +1,11 @@
-import { zPollSchema } from '$lib/models';
+import { zPollQuestionSchema, zPollSchema } from '$lib/models';
 import { pb } from '$lib/pocketbase';
 import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 import { currentUser } from '$lib/stores/user';
 import { redirect } from '@sveltejs/kit';
+
+const zPollQuestionArraySchema = zPollQuestionSchema.array()
 
 export let load: PageLoad = async ({ params, fetch, depends }) => {
   const { id } = params;
@@ -12,15 +14,21 @@ export let load: PageLoad = async ({ params, fetch, depends }) => {
   if (!user) throw redirect(303, '/');
 
   try {
-    // FIXME: Don't get the full list, use pagination
-    const poll = await pb
+    const pollP = pb
       .collection('polls')
       .getOne(id, { fetch })
       .then((l) => zPollSchema.parse(l));
 
+    const questionsP = pb
+      .collection('pollQuestions')
+      .getFullList({ fetch, filter: pb.filter('poll={:poll}', { poll: id }) })
+      .then(l => zPollQuestionArraySchema.parse(l))
+
     depends('app:poll');
 
-    return { poll };
+    const [poll, questions] = await Promise.all([pollP, questionsP])
+
+    return { poll, questions };
   } catch (e) {
     console.log(e);
     throw e;

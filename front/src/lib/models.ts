@@ -34,11 +34,11 @@ export const zUserSchema = zModelBase.extend({
 
 const toDateTime = (d: string) => {
   const s = d.split(' ');
-  if (s.length === 1) return s[0]
+  if (s.length === 1) return s[0];
 
-  const j = s.join('T')
-  return j.slice(0, j.length - 1)
-}
+  const j = s.join('T');
+  return j.slice(0, j.length - 1);
+};
 
 export const zPollSchema = zModelBase.extend({
   name: z.string(),
@@ -51,8 +51,15 @@ export const zPollSchema = zModelBase.extend({
 });
 
 export const zPollQuestionSchema = zModelBase.extend({
-  question: z.string(),
+  question: z.any(),
   poll: z.string(),
+  options: z.object({
+    kind: z.enum(['multiple', 'single']).default('single'),
+    entries: z.object({
+      key: z.string(),
+      value: z.string(),
+    }).array(),
+  }),
 });
 
 export const zPollAnswerSchema = zModelBase.extend({

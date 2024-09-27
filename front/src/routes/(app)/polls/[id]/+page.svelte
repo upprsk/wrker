@@ -49,6 +49,18 @@
       <h4 class="card-title">{data.poll.name}</h4>
 
       <Quill contents={data.poll.description} readOnly showControls={false} />
+
+      {#each data.questions as question (question.id)}
+        <div class="rounded border p-5">
+          <Quill contents={question.question} readOnly showControls={false} />
+
+          <ul>
+            {#each question.options.entries as opt (opt.key)}
+              <li>{opt.key}</li>
+            {/each}
+          </ul>
+        </div>
+      {/each}
     </div>
   </div>
 </PageGrid>

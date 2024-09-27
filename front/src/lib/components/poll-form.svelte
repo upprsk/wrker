@@ -16,6 +16,7 @@
     validators: zodClient(zEditPollSchema),
     SPA: true,
     dataType: 'json',
+    resetForm: false,
     async onUpdate({ form }) {
       console.log(form.data);
 
@@ -35,8 +36,6 @@
     const d = new Date(new Date().toDateString()).toISOString();
     return d.slice(0, d.length - 1);
   };
-
-  $: console.log('formData.description:', $formData.description, getToday());
 </script>
 
 <form class="card-body" method="POST" use:enhance>
@@ -138,6 +137,7 @@
   {/if}
 
   <div class="card-actions justify-end">
+    <a href="questions" class="btn btn-secondary">Editar Perguntas</a>
     <button type="submit" class="btn btn-primary">Salvar</button>
   </div>
 </form>

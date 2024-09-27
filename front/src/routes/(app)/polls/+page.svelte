@@ -36,7 +36,7 @@
           </thead>
           <tbody>
             {#each data.polls as poll (poll.id)}
-              {@const questions = data.questions.filter((q) => q.poll)}
+              {@const questions = data.questions.filter((q) => q.poll === poll.id)}
               <tr class:bg-base-200={poll.open}>
                 <td>{poll.name}</td>
                 <td>{poll.audience.length} convidado{poll.audience.length !== 1 ? 's' : ''}</td>
