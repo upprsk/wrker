@@ -55,10 +55,12 @@ export const zPollQuestionSchema = zModelBase.extend({
   poll: z.string(),
   options: z.object({
     kind: z.enum(['multiple', 'single']).default('single'),
-    entries: z.object({
-      key: z.string(),
-      value: z.string(),
-    }).array(),
+    entries: z
+      .object({
+        key: z.string(),
+        value: z.string(),
+      })
+      .array(),
   }),
 });
 

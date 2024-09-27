@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 
-const zPollQuestionArraySchema = zPollQuestionSchema.array()
+const zPollQuestionArraySchema = zPollQuestionSchema.array();
 
 export let load: PageLoad = async ({ params, fetch }) => {
   const { id } = params;
@@ -24,7 +24,7 @@ export let load: PageLoad = async ({ params, fetch }) => {
       .getFullList({ fetch, filter: pb.filter('poll={:poll}', { poll: id }) })
       .then((l) => zPollQuestionArraySchema.parse(l));
 
-    const [poll, questions] = await Promise.all([pollP, questionsP])
+    const [poll, questions] = await Promise.all([pollP, questionsP]);
 
     return { questions, poll };
   } catch (e) {

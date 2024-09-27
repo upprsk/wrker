@@ -51,12 +51,16 @@
       <Quill contents={data.poll.description} readOnly showControls={false} />
 
       {#each data.questions as question (question.id)}
+        {@const answers = data.answers.filter((it) => it.question == question.id)}
+
         <div class="rounded border p-5">
           <Quill contents={question.question} readOnly showControls={false} />
 
           <ul>
             {#each question.options.entries as opt (opt.key)}
-              <li>{opt.key}</li>
+              {@const ans = answers.filter((it) => it.answer === opt.key)}
+
+              <li>{opt.key}: {ans.length} resposta{ans.length !== 1 ? 's' : ''}</li>
             {/each}
           </ul>
         </div>

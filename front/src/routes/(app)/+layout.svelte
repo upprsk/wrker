@@ -3,10 +3,13 @@
   import Appbar from './appbar.svelte';
   import Drawer from './drawer.svelte';
   import * as notif from '$lib/stores/notif';
+  import { goto } from '$app/navigation';
 
   const logout = () => {
     pb.authStore.clear();
     notif.addMessage({ kind: 'info', message: 'Voce saiu da sua conta' });
+
+    goto('/');
   };
 </script>
 

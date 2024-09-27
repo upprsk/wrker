@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 
-const zPollQuestionArraySchema = zPollQuestionSchema.array()
+const zPollQuestionArraySchema = zPollQuestionSchema.array();
 
 export let load: PageLoad = async ({ params, fetch }) => {
   const { id } = params;
