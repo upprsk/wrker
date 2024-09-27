@@ -46,6 +46,6 @@
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
-    <PollForm data={data.form} {action}>Editar Pesquisa</PollForm>
+    <PollForm data={data.form} users={data.users} {action}>Editar Pesquisa</PollForm>
   </div>
 </PageGrid>

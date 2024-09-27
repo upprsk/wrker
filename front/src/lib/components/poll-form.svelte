@@ -1,13 +1,15 @@
 <script lang="ts">
-  import { zMakeErrorDataSchema } from '$lib/models';
+  import { zMakeErrorDataSchema, zUserSchema } from '$lib/models';
   import { processError } from '$lib/pocketbase';
   import { zEditPollSchema, type EditPollSchema } from '$lib/schemas';
-  import { Control, Field, FieldErrors, Label } from 'formsnap';
+  import { Control, Description, Field, FieldErrors, Fieldset, Label, Legend } from 'formsnap';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import Quill from './quill.svelte';
+  import type { z } from 'zod';
 
   export let data: SuperValidated<Infer<EditPollSchema>>;
+  export let users: z.infer<typeof zUserSchema>[];
   export let action: (data: Infer<EditPollSchema>) => PromiseLike<unknown>;
 
   const zError = zMakeErrorDataSchema(zEditPollSchema.keyof());
@@ -113,6 +115,31 @@
       </Control>
       <FieldErrors class="text-error" />
     </Field>
+  </div>
+
+  <div class="form-control w-full max-w-xs">
+    <Fieldset {form} name="audience">
+      <div class="label cursor-pointer">
+        <Legend>Audiencia</Legend>
+      </div>
+
+      {#each users as user (user.id)}
+        <Control let:attrs>
+          <div class="label ml-5 cursor-pointer">
+            <Label class="label-text">{user.fullName}</Label>
+
+            <input
+              {...attrs}
+              type="checkbox"
+              class="checkbox"
+              value={user.id}
+              bind:group={$formData.audience}
+            />
+          </div>
+        </Control>
+      {/each}
+      <FieldErrors />
+    </Fieldset>
   </div>
 
   {#if $errors._errors}

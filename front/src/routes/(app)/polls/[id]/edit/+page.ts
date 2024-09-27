@@ -1,4 +1,4 @@
-import { zPollSchema } from '$lib/models';
+import { zPollSchema, zUserSchema } from '$lib/models';
 import { pb } from '$lib/pocketbase';
 import { zEditPollSchema } from '$lib/schemas';
 import { currentUser } from '$lib/stores/user';
@@ -8,6 +8,8 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { PageLoad } from './$types';
 
+const zUserArraySchema = zUserSchema.array();
+
 export let load: PageLoad = async ({ params, fetch }) => {
   const { id } = params;
 
@@ -15,14 +17,20 @@ export let load: PageLoad = async ({ params, fetch }) => {
   if (!user || user.role !== 'editor') throw redirect(303, '/');
 
   try {
-    const poll = await pb
+    const pollP = pb
       .collection('polls')
       .getOne(id, { fetch })
       .then((l) => zPollSchema.parse(l));
 
+    const usersP = pb
+      .collection('users')
+      .getFullList({ fetch, filter: pb.filter('id!={:self}', { self: user.id }) })
+      .then((l) => zUserArraySchema.parse(l));
+
+    const [poll, users] = await Promise.all([pollP, usersP])
     const form = await superValidate(poll, zod(zEditPollSchema));
 
-    return { poll, form };
+    return { poll, users, form };
   } catch (e) {
     console.log(e);
     throw e;

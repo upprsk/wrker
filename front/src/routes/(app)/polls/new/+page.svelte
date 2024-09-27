@@ -9,7 +9,7 @@
   import { defaults, type Infer } from 'sveltekit-superforms';
   import { zod } from 'sveltekit-superforms/adapters';
 
-  // export let data;
+  export let data;
 
   const action = async (data: Infer<typeof zEditPollSchema>) => {
     const res = await pb.collection('polls').create({ ...data, owner: $currentUser?.id });
@@ -35,6 +35,8 @@
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
-    <PollForm data={defaults(zod(zEditPollSchema))} {action}>Nova Pesquisa</PollForm>
+    <PollForm data={defaults(zod(zEditPollSchema))} users={data.users} {action}
+      >Nova Pesquisa</PollForm
+    >
   </div>
 </PageGrid>
