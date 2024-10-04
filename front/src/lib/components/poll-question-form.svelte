@@ -96,7 +96,7 @@
                 {...attrs}
                 type="text"
                 class="input input-bordered w-full max-w-xs"
-                bind:value={opt.key}
+                bind:value={opt.value}
               />
             </Control>
             <FieldErrors class="text-error" />
@@ -164,11 +164,8 @@
   {/if}
 
   <div class="modal-action">
-    <form method="dialog">
-      <button class="btn">Cancelar</button>
-    </form>
-
-    <!-- if there is a button in form, it will close the modal -->
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="submit" class="btn btn-primary" class:btn-warning={key !== '' || value !== ''}>
+      Salvar
+    </button>
   </div>
 </form>

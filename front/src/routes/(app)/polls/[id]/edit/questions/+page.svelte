@@ -21,7 +21,8 @@
   <!-- </svelte:fragment> -->
 
   {#each data.questions as question (question.id)}
-    <PollQuestionCard {question} />
+    {@const answers = data.answers.filter((it) => it.question == question.id)}
+    <PollQuestionCard {question} {answers} />
   {/each}
 
   <div class="mt-24 flex justify-center">

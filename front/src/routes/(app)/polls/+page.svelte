@@ -31,12 +31,15 @@
               <th>Convidados</th>
               <th>Perguntas</th>
               <th>Termino</th>
+              <th>Status</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {#each data.polls as poll (poll.id)}
               {@const questions = data.questions.filter((q) => q.poll === poll.id)}
+              {@const answers = data.answers.filter((a) => a.expand?.question?.poll === poll.id)}
+
               <tr class:bg-base-200={poll.open}>
                 <td>{poll.name}</td>
                 <td>{poll.audience.length} convidado{poll.audience.length !== 1 ? 's' : ''}</td>
@@ -50,6 +53,18 @@
                     </div>
                   {:else}
                     <span class="opacity-50">---</span>
+                  {/if}
+                </td>
+                <td>
+                  {#if $currentUser?.id === poll.owner}
+                    {#if poll.audience.length}
+                      {(
+                        (answers.length / (questions.length * poll.audience.length)) *
+                        100
+                      ).toFixed(2)}%
+                    {:else}
+                      0%
+                    {/if}
                   {/if}
                 </td>
                 <td>

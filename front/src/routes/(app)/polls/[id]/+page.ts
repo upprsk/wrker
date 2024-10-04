@@ -29,7 +29,8 @@ export let load: PageLoad = async ({ params, fetch, depends }) => {
       .collection('pollAnswers')
       .getFullList({
         fetch,
-        filter: pb.filter('question.poll.id={:poll} && question.poll.owner.id={:user}', {
+        // filter: pb.filter('question.poll.id={:poll} && question.poll.owner.id={:user}', {
+        filter: pb.filter('question.poll.id={:poll}', {
           poll: id,
           user: user.id,
         }),
@@ -39,6 +40,10 @@ export let load: PageLoad = async ({ params, fetch, depends }) => {
     depends('app:poll');
 
     const [poll, questions, answers] = await Promise.all([pollP, questionsP, answersP]);
+
+    // not answered the poll yet
+    if (!answers.findIndex((it) => it.id === user.id)) {
+    }
 
     return { poll, questions, answers };
   } catch (e) {

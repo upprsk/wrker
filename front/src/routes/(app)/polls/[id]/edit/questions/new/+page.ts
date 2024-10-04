@@ -1,4 +1,4 @@
-import { zPollQuestionSchema, zPollSchema } from '$lib/models';
+import { zPollSchema } from '$lib/models';
 import { pb } from '$lib/pocketbase';
 import { currentUser } from '$lib/stores/user';
 import { redirect } from '@sveltejs/kit';

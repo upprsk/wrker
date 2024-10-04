@@ -35,8 +35,13 @@
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
-    <PollForm data={defaults(zod(zEditPollSchema))} users={data.users} {action}
-      >Nova Pesquisa</PollForm
+    <PollForm
+      data={defaults(zod(zEditPollSchema))}
+      allowQuestions={false}
+      users={data.users}
+      {action}
     >
+      Nova Pesquisa
+    </PollForm>
   </div>
 </PageGrid>

@@ -27,7 +27,7 @@ export let load: PageLoad = async ({ params, fetch }) => {
       .getFullList({ fetch, filter: pb.filter('id!={:self}', { self: user.id }) })
       .then((l) => zUserArraySchema.parse(l));
 
-    const [poll, users] = await Promise.all([pollP, usersP])
+    const [poll, users] = await Promise.all([pollP, usersP]);
     const form = await superValidate(poll, zod(zEditPollSchema));
 
     return { poll, users, form };

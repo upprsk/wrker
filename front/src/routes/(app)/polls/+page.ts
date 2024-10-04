@@ -1,10 +1,16 @@
-import { zPollQuestionSchema, zPollSchema } from '$lib/models';
+import { zPollAnswerSchema, zPollQuestionSchema, zPollSchema } from '$lib/models';
 import { pb } from '$lib/pocketbase';
 import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 import { currentUser } from '$lib/stores/user';
 import { redirect } from '@sveltejs/kit';
+import { z } from 'zod';
 
+const zReducedAnswersArraySchema = zPollAnswerSchema
+  .extend({
+    expand: z.object({ question: zPollQuestionSchema }).optional(),
+  })
+  .array();
 const zPollArraySchema = zPollSchema.array();
 const zPollQuestionArraySchema = zPollQuestionSchema.pick({ id: true, poll: true }).array();
 
@@ -24,11 +30,17 @@ export let load: PageLoad = async ({ fetch }) => {
       .getFullList({ fetch, fields: 'id,poll' })
       .then((l) => zPollQuestionArraySchema.parse(l));
 
-    const [polls, questions] = await Promise.all([pollsP, questionsP]);
+    const answersP = pb
+      .collection('pollAnswers')
+      .getFullList({ fetch, expand: 'question' })
+      .then((l) => zReducedAnswersArraySchema.parse(l));
+
+    const [polls, questions, answers] = await Promise.all([pollsP, questionsP, answersP]);
 
     return {
       polls,
       questions,
+      answers,
     };
   } catch (e) {
     console.log(e);

@@ -12,6 +12,8 @@
   export let users: z.infer<typeof zUserSchema>[];
   export let action: (data: Infer<EditPollSchema>) => PromiseLike<unknown>;
 
+  export let allowQuestions = true;
+
   const zError = zMakeErrorDataSchema(zEditPollSchema.keyof());
 
   const form = superForm(data, {
@@ -164,7 +166,13 @@
   {/if}
 
   <div class="card-actions justify-end">
-    <a href="questions" class="btn btn-secondary">Editar Perguntas</a>
+    {#if allowQuestions}
+      <a href="questions" class="btn btn-secondary">Editar Perguntas</a>
+    {:else}
+      <div class="tooltip" data-tip="Cria a pesquisa para adicionar perguntas">
+        <a href="questions" class="btn btn-disabled btn-secondary">Editar Perguntas</a>
+      </div>
+    {/if}
     <button type="submit" class="btn btn-primary">Salvar</button>
   </div>
 </form>
