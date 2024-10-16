@@ -3,8 +3,7 @@
 </script>
 
 <h1>
-  TODO. Go to <a class="link" href="/register">register</a> or
-  <a href="/login" class="link">login</a> for now.
+  Sugestão de onde o logo da empresa capitalis poderia ficar. Só teria que alterar o fundo cinza talvez
 </h1>
 
 {#if $currentUser}

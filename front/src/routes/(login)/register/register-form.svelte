@@ -34,10 +34,19 @@
   const { form: formData, errors, enhance } = form;
 </script>
 
-<form class="card-body" method="POST" use:enhance>
+<div class="">
+  <a
+          href="/"
+          class="btn btn-ghost flex w-full items-center justify-center font-serif text-2xl hover:text-white"
+        >
+          wrker
+        </a>
+</div>
+
+<form class="card-body max-h-[33rem] overflow-auto" method="POST" use:enhance>
   <h4 class="card-title">Registrar</h4>
 
-  <p>Ja tem uma conta? <a href="/login" class="link">Entre aqui</a>!</p>
+  <p>Ja tem uma conta? <a href="/login" class="link hover:bg-indigo-600 hover:text-white hover:rounded-lg hover:no-underline">Entre aqui</a>!</p>
 
   <label class="form-control w-full max-w-xs">
     <Field {form} name="email">
@@ -59,6 +68,25 @@
         >
         <!--   <span class="label-text-alt">Bottom Right label</span> -->
       </div>
+      <FieldErrors class="text-error" />
+    </Field>
+  </label>
+
+
+  <label class="form-control w-full max-w-xs">
+    <Field {form} name="username">
+      <Control let:attrs>
+        <div class="label">
+          <Label class="label-text">Nome de Usuário</Label>
+          <!-- <span class="label-text-alt">Top Right label</span> -->
+        </div>
+        <input
+          {...attrs}
+          type="text"
+          class="input input-bordered w-full max-w-xs"
+          bind:value={$formData.username}
+        />
+      </Control>
       <FieldErrors class="text-error" />
     </Field>
   </label>
@@ -139,7 +167,7 @@
   {/if}
 
   <div class="card-actions justify-end">
-    <button type="submit" class="btn btn-primary">Confirmar</button>
+    <button type="submit" class="btn btn-primary rounded-lg hover:text-white">Confirmar</button>
   </div>
 </form>
 

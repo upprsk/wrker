@@ -31,3 +31,42 @@ export const zUserSchema = zModelBase.extend({
   fullName: z.string(),
   role: z.enum(['editor', 'viewer']),
 });
+
+const toDateTime = (d: string) => {
+  const s = d.split(' ');
+  if (s.length === 1) return s[0];
+
+  const j = s.join('T');
+  return j.slice(0, j.length - 1);
+};
+
+export const zPollSchema = zModelBase.extend({
+  name: z.string(),
+  owner: z.string(),
+  description: z.any(),
+  open: z.boolean(),
+  closingDate: z.string().transform(toDateTime),
+  audience: z.string().array(),
+  anonymous: z.boolean(),
+});
+
+export const zPollQuestionSchema = zModelBase.extend({
+  question: z.any(),
+  poll: z.string(),
+  options: z.object({
+    kind: z.enum(['multiple', 'single']).default('single'),
+    entries: z
+      .object({
+        key: z.string(),
+        value: z.string(),
+      })
+      .array(),
+  }),
+});
+
+export const zPollAnswerSchema = zModelBase.extend({
+  question: z.string(),
+  user: z.string(),
+  metadata: z.any(),
+  answer: z.union([z.number(), z.string()]),
+});

@@ -34,7 +34,22 @@
       } catch (e) {
         console.error(e);
 
+        // Definir uma mensagem de erro personalizada
+        let errorMessage = 'Falha no login. Verifique suas credenciais e tente novamente.';
+
+        if (e instanceof Error) {
+           errorMessage = e.message;
+        }
+
+        // Exibir notificação de erro
+        notif.addMessage({
+            kind: 'error',
+            message: 'Erro no login',
+            details: errorMessage,
+        });
+
         return processError(form, e, zError);
+
       }
     },
   });
@@ -42,10 +57,21 @@
   const { form: formData, errors, enhance } = form;
 </script>
 
+<div class="">
+  <a
+          href="/"
+          class="btn btn-ghost flex w-full items-center justify-center font-serif text-2xl hover:text-white"
+        >
+          wrker
+        </a>
+</div>
+
+
 <form class="card-body" method="POST" use:enhance>
+  
   <h4 class="card-title">Login</h4>
 
-  <p>Nao tem uma conta? <a href="/register" class="link">Crie aqui</a>!</p>
+  <p>Nao tem uma conta? <a href="/register" class="link hover:bg-indigo-600 hover:text-white hover:rounded-lg hover:no-underline">Crie aqui</a>!</p>
 
   <label class="form-control w-full max-w-xs">
     <Field {form} name="email">
@@ -111,7 +137,7 @@
   {/if}
 
   <div class="card-actions justify-end">
-    <button type="submit" class="btn btn-primary">Confirmar</button>
+    <button type="submit" class="btn btn-primary rounded-lg hover:text-white">Confirmar</button>
   </div>
 </form>
 
