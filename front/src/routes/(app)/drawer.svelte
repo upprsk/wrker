@@ -40,6 +40,7 @@
         </li>
       {:else}
         <li><a href="/login" class="font-bold">Login</a></li>
+        <li><a href="/register" class="font-bold">Register</a></li>
       {/if}
     </ul>
   </div>
