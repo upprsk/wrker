@@ -21,12 +21,10 @@
   <div class="drawer-side">
     <label for={drawerId} aria-label="close sidebar" class="drawer-overlay"></label>
     <ul class="menu min-h-full w-80 bg-base-100 p-4 text-base-content shadow-sm">
+      <!-- Logo do site inserida no lugar da palavra "wrker" -->
       <li class="hidden lg:block">
-        <a
-          href="/"
-          class="btn btn-ghost flex w-full items-center justify-start font-serif text-2xl"
-        >
-          wrker
+        <a href="/">
+          <img src="/front/src/logo_wrker2.webp" alt="Logo wrker" class="w-full h-auto" />
         </a>
       </li>
 
