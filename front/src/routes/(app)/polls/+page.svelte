@@ -8,13 +8,13 @@
 
 <PageGrid>
   <ul slot="breadcrumbs">
-    <li><a href="/">Home</a></li>
-    <li><a href="/polls">Pesquisas</a></li>
+    <li><a href="/" class="hover:text-white">Home</a></li>
+    <li><a href="/polls" class="hover:text-white">Pesquisas</a></li>
   </ul>
 
   <svelte:fragment slot="actions">
     {#if $currentUser?.role === 'editor'}
-      <a href="new" class="btn btn-primary btn-xs">nova</a>
+      <a href="new" class="btn btn-primary btn-xs  rounded-lg hover:text-white  text-base">Nova Pesquisa</a>
     {/if}
   </svelte:fragment>
 

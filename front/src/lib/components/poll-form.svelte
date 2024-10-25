@@ -170,9 +170,9 @@
       <a href="questions" class="btn btn-secondary">Editar Perguntas</a>
     {:else}
       <div class="tooltip" data-tip="Cria a pesquisa para adicionar perguntas">
-        <a href="questions" class="btn btn-disabled btn-secondary">Editar Perguntas</a>
+        <a href="questions" class="btn btn-disabled btn-secondary rounded-lg hover:text-white">Editar Perguntas</a>
       </div>
     {/if}
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="submit" class="btn btn-primary rounded-lg hover:text-white">Salvar</button>
   </div>
 </form>

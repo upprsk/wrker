@@ -25,13 +25,13 @@
 
 <PageGrid>
   <ul slot="breadcrumbs">
-    <li><a href="/">Home</a></li>
-    <li><a href="/polls">Pesquisas</a></li>
-    <li><a href="/polls/new">Nova Pesquisa</a></li>
+    <li><a href="/" class="hover:text-white">Home</a></li>
+    <li><a href="/polls" class="hover:text-white">Pesquisas</a></li>
+    <li><a href="/polls/new" class="hover:text-white">Nova Pesquisa</a></li>
   </ul>
 
   <svelte:fragment slot="actions">
-    <a href="../" class="btn btn-error btn-xs">cancelar</a>
+    <a href="../" class="btn btn-error btn-xs hover:text-white rounded-lg">cancelar</a>
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
