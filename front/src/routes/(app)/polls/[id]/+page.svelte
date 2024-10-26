@@ -34,13 +34,13 @@
 
   <svelte:fragment slot="actions">
     {#if data.poll.owner === $currentUser?.id}
-      <a href="edit" class="btn btn-primary btn-xs">editar</a>
+      <a href="edit" class="btn btn-primary btn-xs rounded-lg hover:text-white">editar</a>
 
-      <button class="btn btn-warning btn-xs">remover</button>
+      <button class="btn btn-warning btn-xs  rounded-lg hover:text-white">remover</button>
       {#if data.poll.open}
-        <button class="btn btn-warning btn-xs" on:click={() => openOrClose(false)}>encerrar</button>
+        <button class="btn btn-warning btn-xs rounded-lg hover:text-white" on:click={() => openOrClose(false)}>encerrar</button>
       {:else}
-        <button class="btn btn-warning btn-xs" on:click={() => openOrClose(true)}>iniciar</button>
+        <button class="btn btn-warning btn-xs rounded-lg hover:text-white" on:click={() => openOrClose(true)}>iniciar</button>
       {/if}
     {/if}
   </svelte:fragment>
@@ -50,6 +50,15 @@
       <h4 class="card-title">{data.poll.name}</h4>
 
       <Quill contents={data.poll.description} readOnly showControls={false} />
+      <div class="font-bold text-lg mt-2 text-black-600">
+        Participantes:
+      </div>
+
+      <ul class="pl-2 mt-2">
+        {#each data.poll.audience as users}
+          <li  class="text-gray-700 before:content-['→'] before:mr-2">{users}</li> <!-- ou qualquer outra propriedade que o objeto User tenha -->
+        {/each}
+      </ul>
 
       {#each data.questions as question (question.id)}
         {@const answers = data.answers.filter((it) => it.question == question.id)}
