@@ -33,10 +33,10 @@
   </ul>
 
   <svelte:fragment slot="actions">
-    <a href="questions" class="btn btn-primary btn-xs">editar perguntas</a>
+    <a href="questions" class="btn btn-primary btn-xs rounded-lg hover:text-white">Editar perguntas</a>
 
     {#if data.poll.owner === $currentUser?.id}
-      <button class="btn btn-warning btn-xs">remover</button>
+      <button class="btn btn-warning btn-xs rounded-lg hover:text-white">Deletar Pesquisa</button>
       <!-- {#if data.poll.open} -->
       <!--   <button class="btn btn-warning btn-xs" on:click={() => openOrClose(false)}>encerrar</button> -->
       <!-- {:else} -->

@@ -6,8 +6,31 @@
   import * as notif from '$lib/stores/notif';
   import { invalidate } from '$app/navigation';
   import Question from './Question.svelte';
+  import { zPollSchema, zUserSchema } from '$lib/models';
+  import { onMount } from 'svelte';
 
   export let data;
+
+  // Definir o tipo de audienceUsernames
+  let audienceUsernames: { id: string; username: string }[] = [];
+
+  
+  // Função para buscar os usuários do banco de dados e armazenar o id e username
+  async function fetchUsers() {
+    const zUserArraySchema = zUserSchema.array();
+    const usersInBD = await pb
+      .collection('users')
+      .getFullList({ fetch, filter: pb.filter('id!={:self}', { self: currentUser }) })
+      .then((l) => zUserArraySchema.parse(l));
+
+    // Mapear apenas id e username dos usuários para facilitar a comparação
+    return usersInBD.map(user => ({ id: user.id, username: user.username }));
+  }
+
+  // Chamar a função fetchUsers ao montar o componente e salvar os dados dos usuários no array
+  onMount(async () => {
+    audienceUsernames = await fetchUsers();
+  });
 
   const openOrClose = async (open: boolean) => {
     try {
@@ -27,9 +50,9 @@
 
 <PageGrid>
   <ul slot="breadcrumbs">
-    <li><a href="/">Home</a></li>
-    <li><a href="/polls">Pesquisas</a></li>
-    <li><a href="/polls/{data.poll.id}">{data.poll.name}</a></li>
+    <li><a class="hover:text-white" href="/">Home</a></li>
+    <li><a class="hover:text-white" href="/polls">Pesquisas</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}">{data.poll.name}</a></li>
   </ul>
 
   <svelte:fragment slot="actions">
@@ -54,11 +77,18 @@
         Participantes:
       </div>
 
-      <ul class="pl-2 mt-2">
-        {#each data.poll.audience as users}
-          <li  class="text-gray-700 before:content-['→'] before:mr-2">{users}</li> <!-- ou qualquer outra propriedade que o objeto User tenha -->
-        {/each}
-      </ul>
+      <!-- HTML para exibir a lista -->
+  <ul class="pl-2 mt-2">
+    {#each data.poll.audience as audiencia}
+      {#each audienceUsernames as user}
+        {#if audiencia === user.id}
+          <li class="inline-block text-gray-700 before:content-[''] before:mr-2 hover:bg-gray-200 p-1 rounded mr-2">
+            {user.username}
+          </li>
+        {/if}
+      {/each}
+    {/each}
+  </ul>
 
       {#each data.questions as question (question.id)}
         {@const answers = data.answers.filter((it) => it.question == question.id)}
