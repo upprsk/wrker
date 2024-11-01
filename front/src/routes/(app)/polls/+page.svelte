@@ -4,6 +4,14 @@
   import { getRelativeTimeString } from '$lib/time-delta';
 
   export let data;
+
+  // Controla a visibilidade do número de convidados para cada pesquisa
+  let showAudienceCount: Record<string, boolean> = {};
+
+  // Alterna a exibição do número de convidados para uma pesquisa específica
+  function toggleAudienceCount(pollId: string) {
+    showAudienceCount[pollId] = !showAudienceCount[pollId];
+  }
 </script>
 
 <PageGrid>
@@ -69,12 +77,19 @@
                 </td>
                 <td>
                   {#if poll.owner === $currentUser?.id}
-                    <a href="{poll.id}/edit" class="btn btn-primary btn-xs">editar</a>
+                    <a href="{poll.id}/edit" class="btn btn-primary btn-xs hover:text-white">Editar</a>
                   {/if}
 
-                  <a href={poll.id} class="btn btn-ghost btn-xs">detalhes</a>
+                  <a href={poll.id} class="btn btn-ghost btn-xs hover:text-white">detalhes</a>
                 </td>
               </tr>
+              {#if showAudienceCount[poll.id]}
+                <tr>
+                  <td colspan="6" class="text-center text-gray-600">
+                    Número de convidados: {poll.audience.length}
+                  </td>
+                </tr>
+              {/if}
             {/each}
           </tbody>
         </table>

@@ -22,27 +22,44 @@
 
     console.log('save poll:', res);
   };
+
+
+    // Função para alterar o estado da pesquisa usando action
+    const openOrClose = async (newStatus: boolean) => {
+    try {
+      const updatedData = { ...data.poll, open: newStatus };
+      await action(updatedData);
+      data.poll.open = newStatus; // Atualiza localmente o estado de `open`
+    } catch (error) {
+      console.error('Erro ao alterar o status da pesquisa:', error);
+    }
+  };
 </script>
 
 <PageGrid>
   <ul slot="breadcrumbs">
-    <li><a href="/">Home</a></li>
-    <li><a href="/polls">Pesquisas</a></li>
-    <li><a href="/polls/{data.poll.id}">{data.poll.name}</a></li>
-    <li><a href="/polls/{data.poll.id}/edit">Editar</a></li>
+    <li><a class="hover:text-white" href="/">Home</a></li>
+    <li><a class="hover:text-white" href="/polls">Pesquisas</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}">{data.poll.name}</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}/edit">Editar</a></li>
   </ul>
 
   <svelte:fragment slot="actions">
     <a href="questions" class="btn btn-primary btn-xs rounded-lg hover:text-white">Editar perguntas</a>
 
     {#if data.poll.owner === $currentUser?.id}
-      <button class="btn btn-warning btn-xs rounded-lg hover:text-white">Deletar Pesquisa</button>
-      <!-- {#if data.poll.open} -->
-      <!--   <button class="btn btn-warning btn-xs" on:click={() => openOrClose(false)}>encerrar</button> -->
-      <!-- {:else} -->
-      <!--   <button class="btn btn-warning btn-xs" on:click={() => openOrClose(true)}>iniciar</button> -->
-      <!-- {/if} -->
+    <button class="btn btn-warning btn-xs rounded-lg hover:text-white">Deletar Pesquisa</button>
+
+    {#if data.poll.open}
+      <button class="btn btn-warning btn-xs rounded-lg hover:text-white" on:click={() => openOrClose(false)}>
+        Encerrar
+      </button>
+    {:else}
+      <button class="btn btn-warning btn-xs rounded-lg hover:text-white" on:click={() => openOrClose(true)}>
+        Iniciar
+      </button>
     {/if}
+  {/if}
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
