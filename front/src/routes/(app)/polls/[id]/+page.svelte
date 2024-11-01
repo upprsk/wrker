@@ -6,13 +6,13 @@
   import * as notif from '$lib/stores/notif';
   import { invalidate } from '$app/navigation';
   import Question from './Question.svelte';
-  import { zPollSchema, zUserSchema } from '$lib/models';
+  import { zUserSchema } from '$lib/models';
   import { onMount } from 'svelte';
 
   export let data;
 
   // Definir o tipo de audienceUsernames
-  let audienceUsernames: { id: string; username: string }[] = [];
+  let audienceUsernames: { id: string; fullName: string }[] = [];
 
   
   // Função para buscar os usuários do banco de dados e armazenar o id e username
@@ -24,7 +24,7 @@
       .then((l) => zUserArraySchema.parse(l));
 
     // Mapear apenas id e username dos usuários para facilitar a comparação
-    return usersInBD.map(user => ({ id: user.id, username: user.username }));
+    return usersInBD.map(user => ({ id: user.id, fullName: user.fullName }));
   }
 
   // Chamar a função fetchUsers ao montar o componente e salvar os dados dos usuários no array
@@ -83,7 +83,7 @@
       {#each audienceUsernames as user}
         {#if audiencia === user.id}
           <li class="inline-block text-gray-700 before:content-[''] before:mr-2 hover:bg-gray-200 p-1 rounded mr-2">
-            {user.username}
+            {user.fullName}
           </li>
         {/if}
       {/each}
