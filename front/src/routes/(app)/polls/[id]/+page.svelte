@@ -14,7 +14,41 @@
   // Definir o tipo de audienceUsernames
   let audienceUsernames: { id: string; fullName: string }[] = [];
 
-  
+  // Para controlar qual aba está visível (descrição ou respostas)
+  let showAnswers = false;
+
+  // Função para exibir/ocultar a aba de respostas
+  const toggleAnswers = () => {
+    showAnswers = !showAnswers;
+  };
+
+  // Função para enviar a resposta
+  const submitAnswer = async (questionId: string, selectedOptionKey: string) => {
+  try {
+    // Preparar o objeto de nova resposta
+    const newAnswer = {
+      poll: data.poll.id,
+      user: currentUser,  // Usuário que está respondendo
+      question: questionId,  // ID da pergunta
+      answer: selectedOptionKey,  // A chave da opção escolhida
+    };
+
+    // Enviar a resposta para o banco de dados
+    await pb.collection('poll_answers').create(newAnswer);
+    notif.addMessage({ kind: 'info', message: 'Resposta registrada com sucesso.' });
+
+    invalidate('app:poll'); // Atualiza a página para mostrar a resposta
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      notif.addMessage({ kind: 'error', message: 'Erro ao registrar resposta.', details: error.message });
+    } else {
+      notif.addMessage({ kind: 'error', message: 'Erro desconhecido ao registrar resposta.' });
+    }
+  }
+};
+
+
+
   // Função para buscar os usuários do banco de dados e armazenar o id e username
   async function fetchUsers() {
     const zUserArraySchema = zUserSchema.array();
@@ -72,28 +106,55 @@
     <div class="card-body">
       <h4 class="card-title">{data.poll.name}</h4>
 
+      <!-- Descrição da pesquisa -->
       <Quill contents={data.poll.description} readOnly showControls={false} />
+      
+      <!-- Mostrar lista de participantes -->
       <div class="font-bold text-lg mt-2 text-black-600">
         Participantes:
       </div>
+      <ul class="pl-2 mt-2">
+        {#each data.poll.audience as audiencia}
+          {#each audienceUsernames as user}
+            {#if audiencia === user.id}
+              <li class="inline-block text-gray-700 before:content-[''] before:mr-2 hover:bg-gray-200 p-1 rounded mr-2">
+                {user.fullName}
+              </li>
+            {/if}
+          {/each}
+        {/each}
+      </ul>
 
-      <!-- HTML para exibir a lista -->
-  <ul class="pl-2 mt-2">
-    {#each data.poll.audience as audiencia}
-      {#each audienceUsernames as user}
-        {#if audiencia === user.id}
-          <li class="inline-block text-gray-700 before:content-[''] before:mr-2 hover:bg-gray-200 p-1 rounded mr-2">
-            {user.fullName}
-          </li>
-        {/if}
-      {/each}
-    {/each}
-  </ul>
+      <!-- Botão para alternar entre abas -->
+      <div class="mt-4">
+        <button on:click={toggleAnswers} class="btn btn-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+          {showAnswers ? 'Ver Descrição' : 'Responder Pesquisa'}
+        </button>
+      </div>
 
-      {#each data.questions as question (question.id)}
-        {@const answers = data.answers.filter((it) => it.question == question.id)}
-        <Question poll={data.poll} {question} {answers} />
+      <!-- Exibição de perguntas e respostas -->
+      {#if showAnswers}
+        <div class="mt-4">
+          {#each data.questions as question (question.id)}
+  <div>
+    <h5>{question.question}</h5>
+    <div>
+      {#each question.options.entries as option}
+        <label>
+          <input 
+            type={question.options.kind === 'multiple' ? 'checkbox' : 'radio'}
+            name="answer"
+            value={option.key}
+            on:change={() => submitAnswer(question.id, option.key)}
+          />
+          {option.value}
+        </label>
       {/each}
+    </div>
+  </div>
+{/each}
+        </div>
+      {/if}
     </div>
   </div>
 </PageGrid>
