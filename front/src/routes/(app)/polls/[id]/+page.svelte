@@ -33,7 +33,7 @@
         answer: selectedOptionKey,
       };
 
-      await pb.collection('poll_answers').create(newAnswer);
+      await pb.collection('pollAnswers').create(newAnswer);
       notif.addMessage({ kind: 'info', message: 'Resposta registrada com sucesso.' });
       invalidate('app:poll');
     } catch (error: unknown) {
