@@ -12,6 +12,7 @@
 
   let currentImage = worker;
 
+
   function handleMouseEnter() {
     currentImage = workerHover;
   }
@@ -70,7 +71,8 @@
     <Field {form} name="email">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text"><strong>Email</strong></Label>
+          <Label class="label-text">Email</Label>
+          <!-- <span class="label-text-alt">Top Right label</span> -->
         </div>
         <input
           {...attrs}
@@ -80,17 +82,22 @@
         />
       </Control>
       <div class="label">
-        <Description class="label-text-alt">Use um email ao qual voce tenha acesso e seja reconhecido por seus colegas</Description>
+        <Description class="label-text-alt"
+          >Use um email ao qual voce tenha acesso e seja reconhecido por seus colegas</Description
+        >
+        <!--   <span class="label-text-alt">Bottom Right label</span> -->
       </div>
       <FieldErrors class="text-error" />
     </Field>
   </label>
 
+
   <label class="form-control w-full max-w-xs">
     <Field {form} name="fullName">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text"><strong>Nome completo</strong></Label>
+          <Label class="label-text">Nome completo</Label>
+          <!-- <span class="label-text-alt">Top Right label</span> -->
         </div>
         <input
           {...attrs}
@@ -107,7 +114,8 @@
     <Field {form} name="password">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text"><strong>Senha</strong></Label>
+          <Label class="label-text">Senha</Label>
+          <!-- <span class="label-text-alt">Top Right label</span> -->
         </div>
         <input
           {...attrs}
@@ -124,7 +132,8 @@
     <Field {form} name="passwordConfirm">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text"><strong>Confirme a Senha</strong></Label>
+          <Label class="label-text">Confirme a Senha</Label>
+          <!-- <span class="label-text-alt">Top Right label</span> -->
         </div>
         <input
           {...attrs}
