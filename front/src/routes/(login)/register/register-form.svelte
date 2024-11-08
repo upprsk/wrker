@@ -93,24 +93,6 @@
 
 
   <label class="form-control w-full max-w-xs">
-    <Field {form} name="username">
-      <Control let:attrs>
-        <div class="label">
-          <Label class="label-text">Nome de Usuário</Label>
-          <!-- <span class="label-text-alt">Top Right label</span> -->
-        </div>
-        <input
-          {...attrs}
-          type="text"
-          class="input input-bordered w-full max-w-xs"
-          bind:value={$formData.username}
-        />
-      </Control>
-      <FieldErrors class="text-error" />
-    </Field>
-  </label>
-
-  <label class="form-control w-full max-w-xs">
     <Field {form} name="fullName">
       <Control let:attrs>
         <div class="label">
