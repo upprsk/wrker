@@ -135,7 +135,7 @@
         <div class="label">
           <span class="label-text">Valor</span>
         </div>
-        <input type="text" class="input input-bordered w-full max-w-xs" bind:value />
+        <input type="text" class="input input-bordered w-full max-w-xs" bind:value={value} />
       </label>
 
       <button class="btn" disabled={key === '' || value === ''}>Adicionar</button>

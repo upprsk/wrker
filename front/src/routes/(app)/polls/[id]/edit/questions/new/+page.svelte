@@ -24,16 +24,16 @@
 
 <PageGrid>
   <ul slot="breadcrumbs">
-    <li><a href="/">Home</a></li>
-    <li><a href="/polls">Pesquisas</a></li>
-    <li><a href="/polls/{data.poll.id}">{data.poll.name}</a></li>
-    <li><a href="/polls/{data.poll.id}/edit">Editar</a></li>
-    <li><a href="/polls/{data.poll.id}/edit/questions">Perguntas</a></li>
-    <li><a href="/polls/{data.poll.id}/edit/new">Nova</a></li>
+    <li><a class="hover:text-white" href="/">Home</a></li>
+    <li><a class="hover:text-white" href="/polls">Pesquisas</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}">{data.poll.name}</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}/edit">Editar</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}/edit/questions">Perguntas</a></li>
+    <li><a class="hover:text-white" href="/polls/{data.poll.id}/edit/new">Nova</a></li>
   </ul>
 
   <svelte:fragment slot="actions">
-    <a href="../" class="btn btn-error btn-xs">cancelar</a>
+    <a href="../" class="btn btn-error btn-xs rounded-lg hover:text-white">cancelar</a>
   </svelte:fragment>
 
   <div class="card mx-auto my-5 bg-base-100">
