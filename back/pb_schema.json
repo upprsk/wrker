@@ -122,7 +122,7 @@
     ],
     "listRule": "@request.auth.role = 'editor' ||\n@request.auth.id   = question.poll.owner.id ||\n@request.auth.id   = user.id",
     "viewRule": "@request.auth.role = 'editor' ||\n@request.auth.id   = question.poll.owner.id ||\n@request.auth.id   = user.id",
-    "createRule": "question.poll.audience:each = @request.auth.id &&\nquestion.poll.open = true",
+    "createRule": "question.poll.open = true &&\nquestion.poll.audience:each ?= @request.auth.id",
     "updateRule": null,
     "deleteRule": null,
     "options": {}
