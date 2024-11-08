@@ -8,6 +8,20 @@
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { zLoginSchema, type LoginSchema } from './schema';
   import * as notif from '$lib/stores/notif';
+  import worker from '../../../icons/LogoWorker2.png';
+  import workerHover from '../../../icons/LogoWorkerHover2.png';
+
+
+  let currentImage = worker;
+
+
+  function handleMouseEnter() {
+    currentImage = workerHover;
+  }
+
+  function handleMouseLeave() {
+    currentImage = worker;
+  }
 
   export let data: SuperValidated<Infer<LoginSchema>>;
 
@@ -60,9 +74,15 @@
 <div class="">
   <a
           href="/"
-          class="btn btn-ghost flex w-full items-center justify-center font-serif text-2xl hover:text-white"
+          class="btn btn-ghost flex w-full font-serif text-2xl !bg-transparent !shadow-none"
         >
-          wrker
+        <img 
+          src={currentImage} 
+          alt="LogotipoSite" 
+          class="w-32 mx-auto mb-4" 
+          on:mouseenter={handleMouseEnter}
+          on:mouseleave={handleMouseLeave}
+          >
         </a>
 </div>
 

@@ -7,6 +7,19 @@
   import SuperDebug, { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { zRegisterSchema, type RegisterSchema } from './schema';
+  import worker from '../../../icons/LogoWorker2.png';
+  import workerHover from '../../../icons/LogoWorkerHover2.png';
+
+  let currentImage = worker;
+
+
+  function handleMouseEnter() {
+    currentImage = workerHover;
+  }
+
+  function handleMouseLeave() {
+    currentImage = worker;
+  }
 
   export let data: SuperValidated<Infer<RegisterSchema>>;
 
@@ -37,9 +50,15 @@
 <div class="">
   <a
           href="/"
-          class="btn btn-ghost flex w-full items-center justify-center font-serif text-2xl hover:text-white"
+          class="btn btn-ghost flex w-full font-serif text-2xl !bg-transparent !shadow-none"
         >
-          wrker
+        <img 
+          src={currentImage} 
+          alt="LogotipoSite" 
+          class="w-32 mx-auto mb-4" 
+          on:mouseenter={handleMouseEnter}
+          on:mouseleave={handleMouseLeave}
+          >
         </a>
 </div>
 

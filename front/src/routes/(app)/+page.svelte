@@ -1,11 +1,14 @@
 <script lang="ts">
   import { currentUser } from '$lib/stores/user';
+
 </script>
 
-<h1>
-  Sugestão de onde o logo da empresa capitalis poderia ficar. Só teria que alterar o fundo cinza talvez
-</h1>
-
 {#if $currentUser}
-  {$currentUser.fullName}
+  <div class="user-info">
+    Olá, {$currentUser.fullName}!
+  </div>
+{:else}
+  <div class="no-user-message italic font-bold">
+    Você não está autenticado.
+  </div>
 {/if}
