@@ -11,9 +11,7 @@
   import worker from '../../../icons/LogoWorker2.png';
   import workerHover from '../../../icons/LogoWorkerHover2.png';
 
-
   let currentImage = worker;
-
 
   function handleMouseEnter() {
     currentImage = workerHover;
@@ -48,22 +46,18 @@
       } catch (e) {
         console.error(e);
 
-        // Definir uma mensagem de erro personalizada
         let errorMessage = 'Falha no login. Verifique suas credenciais e tente novamente.';
-
         if (e instanceof Error) {
-           errorMessage = e.message;
+          errorMessage = e.message;
         }
 
-        // Exibir notificação de erro
         notif.addMessage({
-            kind: 'error',
-            message: 'Erro no login',
-            details: errorMessage,
+          kind: 'error',
+          message: 'Erro no login',
+          details: errorMessage,
         });
 
         return processError(form, e, zError);
-
       }
     },
   });
@@ -71,34 +65,45 @@
   const { form: formData, errors, enhance } = form;
 </script>
 
+<style>
+  /* Estilo para o fundo da página */
+  body, .page-background {
+    background-color: #E0FFFF;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
 <div class="">
   <a
-          href="/"
-          class="btn btn-ghost flex w-full font-serif text-2xl !bg-transparent !shadow-none"
-        >
-        <img 
-          src={currentImage} 
-          alt="LogotipoSite" 
-          class="w-32 mx-auto mb-4" 
-          on:mouseenter={handleMouseEnter}
-          on:mouseleave={handleMouseLeave}
-          >
-        </a>
+    href="/"
+    class="btn btn-ghost flex w-full font-serif text-2xl !bg-transparent !shadow-none"
+  >
+    <img 
+      src={currentImage} 
+      alt="LogotipoSite" 
+      class="w-32 mx-auto mb-4" 
+      on:mouseenter={handleMouseEnter}
+      on:mouseleave={handleMouseLeave}
+    >
+  </a>
 </div>
-
 
 <form class="card-body" method="POST" use:enhance>
   
   <h4 class="card-title">Login</h4>
 
-  <p>Nao tem uma conta? <a href="/register" class="link hover:bg-indigo-600 hover:text-white hover:rounded-lg hover:no-underline">Crie aqui</a>!</p>
+  <p>Não tem uma conta? <a href="/register" class="link hover:bg-indigo-600 hover:text-white hover:rounded-lg hover:no-underline">Crie aqui</a>!</p>
 
+  <!-- Campo de Email -->
   <label class="form-control w-full max-w-xs">
     <Field {form} name="email">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text">Email</Label>
-          <!-- <span class="label-text-alt">Top Right label</span> -->
+          <Label class="label-text font-bold">Email</Label> <!-- Negrito aplicado -->
         </div>
         <input
           {...attrs}
@@ -108,21 +113,20 @@
         />
       </Control>
       <div class="label">
-        <Description class="label-text-alt"
-          >Use um email ao qual voce tenha acesso e seja reconhecido por seus colegas</Description
-        >
-        <!--   <span class="label-text-alt">Bottom Right label</span> -->
+        <Description class="label-text-alt">
+          Use um email ao qual você tenha acesso e seja reconhecido por seus colegas
+        </Description>
       </div>
       <FieldErrors class="text-error" />
     </Field>
   </label>
 
+  <!-- Campo de Senha -->
   <label class="form-control w-full max-w-xs">
     <Field {form} name="password">
       <Control let:attrs>
         <div class="label">
-          <Label class="label-text">Senha</Label>
-          <!-- <span class="label-text-alt">Top Right label</span> -->
+          <Label class="label-text font-bold">Senha</Label> <!-- Negrito aplicado -->
         </div>
         <input
           {...attrs}

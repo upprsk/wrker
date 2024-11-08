@@ -9,7 +9,6 @@
   const drawerId = 'my-drawer';
   let currentImage = worker;
 
-
   function handleMouseEnter() {
     currentImage = workerHover;
   }
@@ -31,20 +30,20 @@
   <div class="drawer-content flex flex-col items-center justify-start overflow-y-auto">
     <slot {drawerId} />
   </div>
-  <div class="drawer-side">
+  <div class="drawer-side bg-cyan-100"> <!-- Fundo azul ciano claro aplicado aqui -->
     <label for={drawerId} aria-label="close sidebar" class="drawer-overlay"></label>
-    <ul class="menu min-h-full w-80 bg-base-100 p-4 text-base-content shadow-sm">
+    <ul class="menu min-h-full w-80 p-4 text-base-content shadow-sm">
       <li class="hidden lg:block hover:bg-transparent">
         <a
           href="/"
           class="btn btn-ghost flex w-full font-serif text-2xl !bg-transparent !shadow-none"
         >
-        <img 
-          src={currentImage} 
-          alt="LogotipoSite" 
-          class="w-32 mx-auto mb-4" 
-          on:mouseenter={handleMouseEnter}
-          on:mouseleave={handleMouseLeave}
+          <img 
+            src={currentImage} 
+            alt="LogotipoSite" 
+            class="w-32 mx-auto mb-4" 
+            on:mouseenter={handleMouseEnter}
+            on:mouseleave={handleMouseLeave}
           >
         </a>
       </li>
@@ -67,6 +66,5 @@
     <div class="absolute bottom-0 w-full isolate">
       <img src={logo} alt="LogotipoCaptalis" class="w-32 mx-auto mb-4">
     </div>
-    
   </div>
 </div>
