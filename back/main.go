@@ -10,15 +10,7 @@ import (
 	"github.com/pocketbase/pocketbase/models"
 )
 
-func main() {
-	app := pocketbase.New()
-
-	// serves static files from the provided public dir (if exists)
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
-		return nil
-	})
-
+func bindAppHooks(app core.App) {
 	app.OnRecordAfterCreateRequest("users").Add(func(e *core.RecordCreateEvent) error {
 		admin, _ := e.HttpContext.Get(apis.ContextAdminKey).(*models.Admin)
 		if admin != nil {
@@ -41,6 +33,18 @@ func main() {
 
 		return nil
 	})
+}
+
+func main() {
+	app := pocketbase.New()
+
+	// serves static files from the provided public dir (if exists)
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
+		return nil
+	})
+
+	bindAppHooks(app)
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
