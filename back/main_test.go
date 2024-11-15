@@ -15,6 +15,143 @@ import (
 
 const testDataDir = "./test_pb_data"
 
+// TODO: test creating a user and setting as viewer
+// TODO: test creating a poll and setting the owner
+
+func TestCreateUser(t *testing.T) {
+	adminToken, err := generateAdminToken("the.admin@example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// setup the test ApiScenario app instance
+	setupTestApp := func(t *testing.T) *tests.TestApp {
+		testApp, err := tests.NewTestApp(testDataDir)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// no need to cleanup since scenario.Test() will do that for us
+		// defer testApp.Cleanup()
+
+		bindAppHooks(testApp)
+
+		return testApp
+	}
+
+	createJson := func(t *testing.T, data map[string]any) io.Reader {
+		var buf bytes.Buffer
+		if err := json.NewEncoder(&buf).Encode(data); err != nil {
+			t.Fatal(err)
+		}
+
+		return &buf
+	}
+
+	scenarios := []tests.ApiScenario{
+		{
+			Name:            "try with empty body",
+			Method:          http.MethodPost,
+			Url:             "/api/collections/users/records",
+			ExpectedStatus:  400,
+			ExpectedContent: []string{"\"data\":{}", "\"message\":\"Failed to load the submitted data due to invalid formatting.\""},
+			TestAppFactory:  setupTestApp,
+		},
+		{
+			Name:           "new account requires the role parameter",
+			Method:         http.MethodPost,
+			Url:            "/api/collections/users/records",
+			ExpectedStatus: 400,
+			Body: createJson(t, map[string]any{
+				"fullName":        "Tonny",
+				"password":        "123456890",
+				"passwordConfirm": "123456890",
+			}),
+			ExpectedContent: []string{
+				"\"role\":{\"code\":\"validation_required\"",
+			},
+			TestAppFactory: setupTestApp,
+		},
+		{
+			Name:           "role of 'viewer' is kept",
+			Method:         http.MethodPost,
+			Url:            "/api/collections/users/records",
+			ExpectedStatus: 200,
+			Body: createJson(t, map[string]any{
+				"fullName":        "Tonny",
+				"password":        "123456890",
+				"passwordConfirm": "123456890",
+				"role":            "viewer",
+			}),
+			// OnModelAfterCreate:1 OnModelBeforeCreate:1 OnRecordAfterCreateRequest:1 OnRecordBeforeCreateRequest:1
+			ExpectedEvents: map[string]int{
+				"OnModelBeforeCreate":         1,
+				"OnModelAfterCreate":          1,
+				"OnRecordBeforeCreateRequest": 1,
+				"OnRecordAfterCreateRequest":  1,
+			},
+			ExpectedContent: []string{
+				"\"fullName\":\"Tonny\"",
+				"\"role\":\"viewer\"",
+				"\"verified\":false",
+			},
+			TestAppFactory: setupTestApp,
+		},
+		{
+			Name:           "role of 'editor' is overriden",
+			Method:         http.MethodPost,
+			Url:            "/api/collections/users/records",
+			ExpectedStatus: 200,
+			Body: createJson(t, map[string]any{
+				"fullName":        "Tonny",
+				"password":        "123456890",
+				"passwordConfirm": "123456890",
+				"role":            "editor",
+			}),
+			ExpectedEvents: map[string]int{
+				"OnModelBeforeCreate":         1,
+				"OnModelAfterCreate":          1,
+				"OnRecordBeforeCreateRequest": 1,
+				"OnRecordAfterCreateRequest":  1,
+			},
+			ExpectedContent: []string{
+				"\"fullName\":\"Tonny\"",
+				"\"role\":\"viewer\"",
+				"\"verified\":false",
+			},
+			TestAppFactory: setupTestApp,
+		},
+		{
+			Name:           "role of 'editor' is kept when admin",
+			Method:         http.MethodPost,
+			Url:            "/api/collections/users/records",
+			RequestHeaders: map[string]string{"Authorization": adminToken},
+			ExpectedStatus: 200,
+			Body: createJson(t, map[string]any{
+				"fullName":        "Tonny",
+				"password":        "123456890",
+				"passwordConfirm": "123456890",
+				"role":            "editor",
+			}),
+			ExpectedEvents: map[string]int{
+				"OnModelBeforeCreate":         1,
+				"OnModelAfterCreate":          1,
+				"OnRecordBeforeCreateRequest": 1,
+				"OnRecordAfterCreateRequest":  1,
+			},
+			ExpectedContent: []string{
+				"\"fullName\":\"Tonny\"",
+				"\"role\":\"editor\"",
+				"\"verified\":false",
+			},
+			TestAppFactory: setupTestApp,
+		},
+	}
+
+	for _, scenario := range scenarios {
+		scenario.Test(t)
+	}
+}
+
 func TestGetPolls(t *testing.T) {
 	bobToken, err := generateRecordToken("users", "bob@example.com")
 	if err != nil {
