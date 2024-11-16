@@ -2,6 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
+    supportFile: '../cypress/support/e2e.js',
     baseUrl: 'http://localhost:5173', // Atualize para a porta correta
     setupNodeEvents(on, config) {
       // Evento para registrar falhas com capturas de tela
