@@ -1,4 +1,0 @@
-"scripts": {
-  "pretest": "npm run dev", // Inicia o servidor antes de rodar os testes
-  "test": "cypress open" // Comando para rodar o Cypress
-}
