@@ -15,9 +15,6 @@ import (
 
 const testDataDir = "./test_pb_data"
 
-// TODO: test creating a user and setting as viewer
-// TODO: test creating a poll and setting the owner
-
 func TestCreateUser(t *testing.T) {
 	adminToken, err := generateAdminToken("the.admin@example.com")
 	if err != nil {
