@@ -1,7 +1,7 @@
 describe('Login Component', () => {
   beforeEach(() => {
     // Visita a página de login antes de cada teste
-    cy.visit('http://localhost:4173/login/');
+    cy.visit('http://localhost:5173/login/');
   });
 
   it('Renderiza o formulário de login corretamente', () => {
