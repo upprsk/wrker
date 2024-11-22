@@ -1,7 +1,7 @@
 describe("Página de Pesquisas", () => {
   beforeEach(() => {
     // Etapa 1: Registra um novo usuário
-    cy.visit("http://localhost:5173/register/");
+    cy.visit("http://localhost:4173/register/");
 
     cy.get('input[name="email"]').type("teste1@example.com");
     cy.get('input[name="fullName"]').type("Teste1 Usuário");
