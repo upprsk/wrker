@@ -1,7 +1,7 @@
 describe('Register Component', () => {
     beforeEach(() => {
       // Visita a página de registro antes de cada teste
-      cy.visit('http://localhost:4173/register/');
+      cy.visit('http://localhost:5173/register/');
     });
   
     it('Renderiza o formulário de registro corretamente', () => {
