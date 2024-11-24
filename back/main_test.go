@@ -46,12 +46,15 @@ func TestCreateUser(t *testing.T) {
 
 	scenarios := []tests.ApiScenario{
 		{
-			Name:            "try with empty body",
-			Method:          http.MethodPost,
-			Url:             "/api/collections/users/records",
-			ExpectedStatus:  400,
-			ExpectedContent: []string{"\"data\":{}", "\"message\":\"Failed to load the submitted data due to invalid formatting.\""},
-			TestAppFactory:  setupTestApp,
+			Name:           "try with empty body",
+			Method:         http.MethodPost,
+			Url:            "/api/collections/users/records",
+			ExpectedStatus: 400,
+			ExpectedContent: []string{
+				"\"data\":{}",
+				"\"message\":\"Failed to load the submitted data due to invalid formatting.\"",
+			},
+			TestAppFactory: setupTestApp,
 		},
 		{
 			Name:           "new account requires the role parameter",
