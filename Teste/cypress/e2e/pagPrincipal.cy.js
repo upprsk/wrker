@@ -40,6 +40,8 @@ describe('Sidebar Component', () => {
 
     // Verifica que o botão de logout está visível
     cy.contains('Logout').scrollIntoView().should('be.visible');
+
+    cy.get('.menu > :nth-child(3) > .font-bold').click();
   });
 
   it('Desativa o link de pesquisas quando o usuário não está logado', () => {

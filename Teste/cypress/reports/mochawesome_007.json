@@ -1,0 +1,181 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-11-24T02:19:31.443Z",
+    "end": "2024-11-24T02:19:32.678Z",
+    "duration": 1235,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a91b05bb-c381-43bd-b8ca-a1d6c6a0bf87",
+      "title": "",
+      "fullFile": "cypress\\e2e\\registro.cy.js",
+      "file": "cypress\\e2e\\registro.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "1716c349-0114-4674-a65b-72a833d3106d",
+          "title": "Register Component",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Renderiza o formulário de registro corretamente",
+              "fullTitle": "Register Component Renderiza o formulário de registro corretamente",
+              "timedOut": null,
+              "duration": 157,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Verifica se os campos de email, nome completo e senha estão presentes\ncy.get('input[name=\"email\"]').should('exist');\ncy.get('input[name=\"fullName\"]').should('exist');\ncy.get('input[name=\"password\"]').should('exist');\ncy.get('input[name=\"passwordConfirm\"]').should('exist');\n// Verifica se o botão de \"Confirmar\" está presente\ncy.get('button[type=\"submit\"]').contains('Confirmar').should('exist');",
+              "err": {},
+              "uuid": "eda80677-f865-478f-b93b-92b6e9b06d7a",
+              "parentUUID": "1716c349-0114-4674-a65b-72a833d3106d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Exibe erros de validação ao enviar o formulário vazio",
+              "fullTitle": "Register Component Exibe erros de validação ao enviar o formulário vazio",
+              "timedOut": null,
+              "duration": 156,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Submete o formulário vazio\ncy.get('button[type=\"submit\"]').click();\n// Verifica as mensagens de erro exibidas para cada campo\ncy.contains('Invalid email').should('be.visible');\ncy.contains('String must contain at least 1 character(s)').should('be.visible');\ncy.contains('Cannot be blank.').should('be.visible');",
+              "err": {},
+              "uuid": "7a8cb868-1137-4a6c-90a1-0d565be816ce",
+              "parentUUID": "1716c349-0114-4674-a65b-72a833d3106d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Exibe erro de email inválido",
+              "fullTitle": "Register Component Exibe erro de email inválido",
+              "timedOut": null,
+              "duration": 415,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Insere um email inválido e submete o formulário\ncy.get('input[name=\"email\"]').type('emailinvalido');\ncy.get('button[type=\"submit\"]').click();\n// Verifica a mensagem de erro para o campo de email\ncy.contains('Invalid email').should('be.visible');",
+              "err": {},
+              "uuid": "f729fb03-4ffc-408e-9360-0018aaba5e61",
+              "parentUUID": "1716c349-0114-4674-a65b-72a833d3106d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Exibe erro de senha curta",
+              "fullTitle": "Register Component Exibe erro de senha curta",
+              "timedOut": null,
+              "duration": 289,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Insere uma senha curta e submete o formulário\ncy.get('input[name=\"password\"]').type('123');\ncy.get('button[type=\"submit\"]').click();\n// Verifica a mensagem de erro para o campo de senha\ncy.contains('String must contain at least 1 character(s)').should('be.visible');",
+              "err": {},
+              "uuid": "eeebeca2-9916-4902-bdd6-bc0eb52060eb",
+              "parentUUID": "1716c349-0114-4674-a65b-72a833d3106d",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Navega para a página de login ao clicar no link",
+              "fullTitle": "Register Component Navega para a página de login ao clicar no link",
+              "timedOut": null,
+              "duration": 122,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Clica no link para fazer login\ncy.contains('Ja tem uma conta?').find('a').click();\n// Verifica se a URL foi alterada para a página de login\ncy.url().should('include', '/login');",
+              "err": {},
+              "uuid": "cab31427-fca1-442e-beaa-7092a0883d0e",
+              "parentUUID": "1716c349-0114-4674-a65b-72a833d3106d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "eda80677-f865-478f-b93b-92b6e9b06d7a",
+            "7a8cb868-1137-4a6c-90a1-0d565be816ce",
+            "f729fb03-4ffc-408e-9360-0018aaba5e61",
+            "eeebeca2-9916-4902-bdd6-bc0eb52060eb",
+            "cab31427-fca1-442e-beaa-7092a0883d0e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1139,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

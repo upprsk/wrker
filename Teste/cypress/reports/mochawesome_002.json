@@ -1,0 +1,200 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 6,
+    "pending": 0,
+    "failures": 0,
+    "start": "2024-11-24T02:12:52.631Z",
+    "end": "2024-11-24T02:13:00.800Z",
+    "duration": 8169,
+    "testsRegistered": 6,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "8f3f9c2b-b620-4982-a1ab-7dfb18f301e2",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pesquisa.cy.js",
+      "file": "cypress\\e2e\\pesquisa.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+          "title": "Página de Pesquisas",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Somente Editores podem criar pesquisa",
+              "fullTitle": "Página de Pesquisas Somente Editores podem criar pesquisa",
+              "timedOut": null,
+              "duration": 1129,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como editor\nloginUser(\"editor@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\n// Verifica que o botão \"Nova Pesquisa\" está visível\ncy.contains(\"Nova Pesquisa\").should(\"exist\");",
+              "err": {},
+              "uuid": "7a336639-e049-4607-912d-964525a57045",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Não deve exibir o botão 'Nova Pesquisa' para viewers",
+              "fullTitle": "Página de Pesquisas Não deve exibir o botão 'Nova Pesquisa' para viewers",
+              "timedOut": null,
+              "duration": 980,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como viewer\nloginUser(\"viewer@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\n// Verifica que o botão \"Nova Pesquisa\" não está visível\ncy.contains(\"Nova Pesquisa\").should(\"not.exist\");\ncy.visit(\"http://localhost:4173/\");\n// Verifica que a mensagem de restrição aparece\ncy.contains(\"Você não tem permissão para criar pesquisas.\").should(\"exist\");",
+              "err": {},
+              "uuid": "35106bec-e080-4612-8e1c-602e26c4e7a7",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Viewer deve ser capaz de ver a Pesquisa da qual ele está participando",
+              "fullTitle": "Página de Pesquisas Viewer deve ser capaz de ver a Pesquisa da qual ele está participando",
+              "timedOut": null,
+              "duration": 1044,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como viewer\nloginUser(\"viewer@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\n// Verifica que o botão \"Nova Pesquisa\" não está visível\ncy.contains(\"Pesquisa Teste\").should(\"exist\");\ncy.get('.text-right > .btn').click();",
+              "err": {},
+              "uuid": "bc191f9a-f24b-48f4-b3df-dd4cda1d1975",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Viewer NÃO deve ser capaz de ver a Pesquisa da qual ele NÃO está participando",
+              "fullTitle": "Página de Pesquisas Viewer NÃO deve ser capaz de ver a Pesquisa da qual ele NÃO está participando",
+              "timedOut": null,
+              "duration": 909,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como viewer\nloginUser(\"viewer@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\n// Verifica que o botão \"Nova Pesquisa\" não está visível\ncy.contains(\"Pesquisa Teste 2\").should(\"not.exist\");",
+              "err": {},
+              "uuid": "33af0551-e48f-49b0-a93d-f68cf08b91ab",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Editores devem ser capazes de criar pesquisa",
+              "fullTitle": "Página de Pesquisas Editores devem ser capazes de criar pesquisa",
+              "timedOut": null,
+              "duration": 1780,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como editor\nloginUser(\"editor@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\n// Verifica que o botão \"Nova Pesquisa\" está visível\ncy.contains(\"Nova Pesquisa\").should(\"exist\");\ncy.get('.flex > .btn').click();\ncy.get('input[name=\"name\"]').type('PesquisaDoEditor');\ncy.get('.ql-editor').type('PesquisaDoEditor');\ncy.get('.btn-primary').click();",
+              "err": {},
+              "uuid": "c84718d5-738e-44fe-bbe8-b605ca0021e2",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Editores devem ser capazes de editar Pesquisas",
+              "fullTitle": "Página de Pesquisas Editores devem ser capazes de editar Pesquisas",
+              "timedOut": null,
+              "duration": 2213,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Realiza o login como editor\nloginUser(\"editor@teste.com\", \"senha123\");\ncy.get('.navbar > :nth-child(1) > .btn').click();\ncy.visit(\"http://localhost:4173/polls/\");\ncy.get(':nth-child(1) > .text-right > .btn-primary').click();\ncy.get('.btn-secondary').click();\ncy.get('.mt-24 > .btn').click();\ncy.get('.ql-editor').type('Pergunta');\ncy.get(':nth-child(1) > .input').type('1');\ncy.get(':nth-child(2) > .input').type('1');\ncy.get('.rounded > .flex > .btn').click();\ncy.get('form.flex > :nth-child(1) > .input').type('2');\ncy.get('form.flex > :nth-child(2) > .input').type('2');\ncy.get('form.flex > .btn').click();\ncy.get('.modal-action > .btn').click();",
+              "err": {},
+              "uuid": "74f30b28-7cc0-4061-bac7-789d6947368a",
+              "parentUUID": "229462d3-0ed0-406e-91ec-e4ff6d390bd7",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "7a336639-e049-4607-912d-964525a57045",
+            "35106bec-e080-4612-8e1c-602e26c4e7a7",
+            "bc191f9a-f24b-48f4-b3df-dd4cda1d1975",
+            "33af0551-e48f-49b0-a93d-f68cf08b91ab",
+            "c84718d5-738e-44fe-bbe8-b605ca0021e2",
+            "74f30b28-7cc0-4061-bac7-789d6947368a"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 8055,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

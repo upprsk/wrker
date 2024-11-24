@@ -14,17 +14,39 @@
   let audienceUsernames: { id: string; fullName: string }[] = [];
   let showAnswers = false;
   let showParticipants = false;
+  let userAlreadyAnswered = false;
 
   // Função para alternar a visibilidade da lista de participantes
   const toggleParticipants = () => {
     showParticipants = !showParticipants;
   };
 
+  // Armazena respostas selecionadas para questões de múltipla escolha
+  let selectedAnswers: Record<string, string[]> = {};
+
   const toggleAnswers = () => {
     showAnswers = !showAnswers;
   };
 
-  const submitAnswer = async (questionId: string, selectedOptionKey: string) => {
+    // Verificar se o usuário já respondeu à pesquisa
+    async function checkIfUserAnswered() {
+    try {
+      const currentUserId = get(currentUser)?.id;
+
+      if (currentUserId) {
+        const responses = await pb.collection('pollAnswers').getList(1, 1, {
+          filter: `poll = "${data.poll.id}" && user = "${currentUserId}"`,
+        });
+
+        userAlreadyAnswered = responses.totalItems > 0;
+      }
+    } catch (error) {
+      console.error("Erro ao verificar resposta do usuário:", error);
+    }
+  }
+
+  // Enviar respostas para questões do tipo "single"
+  const submitSingleAnswer = async (questionId: string, selectedOptionKey: string) => {
     try {
       const newAnswer = {
         poll: data.poll.id,
@@ -34,14 +56,46 @@
       };
 
       await pb.collection('pollAnswers').create(newAnswer);
-      notif.addMessage({ kind: 'info', message: 'Resposta registrada com sucesso.' });
-      invalidate('app:poll');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        notif.addMessage({ kind: 'error', message: 'Erro ao registrar resposta.', details: error.message });
-      } else {
-        notif.addMessage({ kind: 'error', message: 'Erro desconhecido ao registrar resposta.' });
+      userAlreadyAnswered = true; // Atualiza o status após a resposta
+    } catch (error) {
+      console.error("Erro ao registrar resposta:", error);
+    }
+  };
+
+  // Enviar respostas para questões do tipo "multiple"
+  const submitMultipleAnswers = async (questionId: string) => {
+    try {
+      const currentUserId = get(currentUser)?.id;
+
+      if (selectedAnswers[questionId] && currentUserId) {
+        const responses = selectedAnswers[questionId].map((answer) => ({
+          poll: data.poll.id,
+          user: currentUserId,
+          question: questionId,
+          answer,
+        }));
+
+        // Enviar respostas em lote
+        await Promise.all(responses.map((response) => pb.collection('pollAnswers').create(response)));
+
+        userAlreadyAnswered = true; // Atualiza o status após a resposta
+        selectedAnswers[questionId] = []; // Limpa as respostas
       }
+    } catch (error) {
+      console.error("Erro ao registrar respostas múltiplas:", error);
+    }
+  };
+
+    // Atualizar as respostas selecionadas para questões do tipo "multiple"
+    const handleMultipleSelection = (questionId: string, optionValue: string, isSelected: boolean) => {
+    if (!selectedAnswers[questionId]) {
+      selectedAnswers[questionId] = [];
+    }
+
+    if (isSelected) {
+      selectedAnswers[questionId].push(optionValue);
+    } else {
+      selectedAnswers[questionId] = selectedAnswers[questionId].filter((value) => value !== optionValue);
     }
   };
 
@@ -53,6 +107,10 @@
       .then((l) => zUserArraySchema.parse(l));
     return usersInBD.map(user => ({ id: user.id, fullName: user.fullName }));
   }
+
+  onMount(() => {
+    checkIfUserAnswered();
+  });
 
   onMount(async () => {
     audienceUsernames = await fetchUsers();
@@ -145,27 +203,59 @@
 
     <!-- Perguntas e respostas -->
     {#if showAnswers}
+    {#if userAlreadyAnswered}
+      <!-- Caso o usuário já tenha respondido -->
+      <div class="mt-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-md shadow">
+        <p class="text-lg font-semibold">A pesquisa já foi respondida.</p>
+      </div>
+    {:else}
+      <!-- Caso o usuário não tenha respondido -->
       <div class="mt-4 space-y-4">
         {#each data.questions as question (question.id)}
           <div class="mb-4 p-4 bg-white rounded-lg shadow-md">
             <h5 class="text-xl font-semibold text-gray-800">{question.question.ops[0].insert}</h5>
             <div class="mt-2">
-              {#each question.options.entries as option}
-                <label class="flex items-center space-x-3 mb-2">
-                  <input
-                    type={question.options.kind === 'multiple' ? 'checkbox' : 'radio'}
-                    name="answer"
-                    value={option.value}
-                    on:change={() => submitAnswer(question.id, option.value)}
-                    class="h-5 w-5 text-blue-600 border-gray-300 rounded"
-                  />
-                  <span class="text-lg text-gray-700">{option.key}</span>
-                </label>
-              {/each}
+              {#if question.options.kind === 'multiple'}
+                <!-- Respostas para questões múltiplas -->
+                {#each question.options.entries as option}
+                  <label class="flex items-center space-x-3 mb-2">
+                    <input
+                      type="checkbox"
+                      value={option.value}
+                      on:change={(event) =>
+                        handleMultipleSelection(question.id, option.value, event.target.checked)
+                      }
+                      class="h-5 w-5 text-blue-600 border-gray-300 rounded"
+                    />
+                    <span class="text-lg text-gray-700">{option.key}</span>
+                  </label>
+                {/each}
+                <button
+                  class="btn btn-primary mt-2"
+                  on:click={() => submitMultipleAnswers(question.id)}
+                >
+                  Enviar Respostas
+                </button>
+              {:else}
+                <!-- Respostas para questões únicas -->
+                {#each question.options.entries as option}
+                  <label class="flex items-center space-x-3 mb-2">
+                    <input
+                      type="radio"
+                      name="answer"
+                      value={option.value}
+                      on:change={() => submitSingleAnswer(question.id, option.value)}
+                      class="h-5 w-5 text-blue-600 border-gray-300 rounded"
+                    />
+                    <span class="text-lg text-gray-700">{option.key}</span>
+                  </label>
+                {/each}
+              {/if}
             </div>
           </div>
         {/each}
       </div>
     {/if}
+  {/if}
   </div>
 </PageGrid>

@@ -2,7 +2,8 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:5173',
+    baseUrl: 'http://localhost:4173',
+    specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
     supportFile: false,
     reporter: 'mochawesome',
     reporterOptions: {
