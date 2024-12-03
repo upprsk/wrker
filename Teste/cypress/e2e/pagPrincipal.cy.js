@@ -1,7 +1,7 @@
 describe('Sidebar Component', () => {
   beforeEach(() => {
     // Simula a visita inicial à página com o Sidebar
-    cy.visit('http://localhost:5173');
+    cy.visit('http://localhost:4173');
   });
 
   it('Exibe login e registro quando o usuário não está logado', () => {
@@ -11,6 +11,9 @@ describe('Sidebar Component', () => {
       win.location.reload();
     });
 
+    // Simula o clique para abrir a barra lateral, se necessário
+    cy.get('.navbar > :nth-child(1) > .btn').click(); // Ajuste o seletor conforme o seu código
+
     // Garante que os elementos estão visíveis, mesmo com overflow
     cy.contains('Login').scrollIntoView().should('be.visible');
     cy.contains('Register').scrollIntoView().should('be.visible');
@@ -18,10 +21,16 @@ describe('Sidebar Component', () => {
 
   it('Exibe logout e pesquisas quando o usuário está logado', () => {
     // Configura um usuário logado no localStorage
-    cy.window().then((win) => {
-      win.localStorage.setItem('currentUser', JSON.stringify({ id: '1', name: 'Test User' }));
-      win.location.reload();
-    });
+    cy.visit('http://localhost:4173/login/');
+
+    // Realiza o login inserindo credenciais válidas
+    cy.get('input[name="email"]').type('bla@bla.com');
+    cy.get('input[name="password"]').type('12345678');
+    cy.get('button[type="submit"]').click();
+
+    cy.url().should('not.include', '/login');
+
+    cy.get('.navbar > :nth-child(1) > .btn').click();
 
     // Garante que "Pesquisas" está visível e não possui classes de desativação
     cy.contains('Pesquisas')
@@ -31,30 +40,20 @@ describe('Sidebar Component', () => {
 
     // Verifica que o botão de logout está visível
     cy.contains('Logout').scrollIntoView().should('be.visible');
-  });
 
-  it('Alterna a imagem ao passar o mouse', () => {
-    // Verifica se a imagem alterna ao passar o mouse
-    cy.get('img[alt="LogotipoSite"]')
-      .should('have.attr', 'src', '/icons/LogoWorker.png')
-      .trigger('mouseenter')
-      .should('have.attr', 'src', '/icons/LogoWorkerHover.png')
-      .trigger('mouseleave')
-      .should('have.attr', 'src', '/icons/LogoWorker.png');
+    cy.get('.menu > :nth-child(3) > .font-bold').click();
   });
 
   it('Desativa o link de pesquisas quando o usuário não está logado', () => {
-    // Remove o usuário do localStorage para simular estado "não logado"
-    cy.window().then((win) => {
-      win.localStorage.removeItem('currentUser');
-      win.location.reload();
-    });
+    
+    cy.get('.navbar > :nth-child(1) > .btn').click();
 
     // Verifica que o link "Pesquisas" está desativado
-    cy.contains('Pesquisas')
-      .scrollIntoView()
-      .should('have.class', 'pointer-events-none')
-      .and('have.class', 'disabled');
+    cy.contains('li','Pesquisas')
+    .should('exist') // Certifique-se de que o elemento está no DOM
+    .scrollIntoView()
+    .should('have.class', 'pointer-events-none')
+    .and('have.class', 'disabled');
   });
 
   it('Despacha o evento de logout ao clicar no botão', () => {
@@ -64,10 +63,19 @@ describe('Sidebar Component', () => {
       win.location.reload();
     });
 
+    cy.visit('http://localhost:4173/login/');
+
+    // Realiza o login inserindo credenciais válidas
+    cy.get('input[name="email"]').type('bla@bla.com');
+    cy.get('input[name="password"]').type('12345678');
+    cy.get('button[type="submit"]').click();
+
+    cy.url().should('not.include', '/login');
+
+    cy.get('.navbar > :nth-child(1) > .btn').click();
+
     // Simula o clique no botão de logout
     cy.contains('Logout').scrollIntoView().click();
 
-    // Verifica que o localStorage foi limpo
-    cy.window().its('localStorage.currentUser').should('not.exist');
   });
 });

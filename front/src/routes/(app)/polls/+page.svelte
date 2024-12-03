@@ -26,66 +26,80 @@
     {/if}
   </svelte:fragment>
 
-  <div class="card mx-auto my-5 bg-base-100">
-    <div class="card-body">
-      <h4 class="card-title">Pesquisas</h4>
-
-      <div class="overflow-x-auto">
-        <table class="table">
+  <div class="card mx-auto my-5 bg-gradient-to-r from-slate-700 to-gray-300 shadow-lg rounded-lg">
+    <div class="card-body text-white">
+      <h4 class="card-title text-2xl font-bold">Pesquisas</h4>
+  
+      <div class="overflow-x-auto bg-white rounded-lg shadow-lg p-4">
+        <table class="table w-full border-collapse border border-gray-300 text-gray-700">
           <!-- head -->
-          <thead>
+          <thead class="bg-gray-100 text-gray-800 text-sm uppercase tracking-wider font-semibold">
             <tr>
-              <th>Nome</th>
-              <th>Convidados</th>
-              <th>Perguntas</th>
-              <th>Termino</th>
-              <th>Status</th>
-              <th></th>
+              <th class="py-3 px-4 text-left">Nome</th>
+              <th class="py-3 px-4 text-left">Convidados</th>
+              <th class="py-3 px-4 text-left">Perguntas</th>
+              <th class="py-3 px-4 text-left">Termino</th>
+              <th class="py-3 px-4 text-left">Status</th>
+              <th class="py-3 px-4"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="divide-y divide-gray-200">
             {#each data.polls as poll (poll.id)}
               {@const questions = data.questions.filter((q) => q.poll === poll.id)}
               {@const answers = data.answers.filter((a) => a.expand?.question?.poll === poll.id)}
-
-              <tr class:bg-base-200={poll.open}>
-                <td>{poll.name}</td>
-                <td>{poll.audience.length} convidado{poll.audience.length !== 1 ? 's' : ''}</td>
-                <td>
+  
+              <tr class="hover:bg-gray-50 transition-colors duration-200">
+                <td class="py-3 px-4 font-medium">{poll.name}</td>
+                <td class="py-3 px-4">{poll.audience.length} convidado{poll.audience.length !== 1 ? 's' : ''}</td>
+                <td class="py-3 px-4">
                   {questions.length} pergunta{questions.length !== 1 ? 's' : ''}
                 </td>
-                <td>
+                <td class="py-3 px-4">
                   {#if poll.closingDate}
-                    <div class="tooltip" data-tip={new Date(poll.closingDate).toLocaleString()}>
+                    <div
+                      class="tooltip tooltip-bottom text-sm text-gray-600"
+                      data-tip={new Date(poll.closingDate).toLocaleString()}
+                    >
                       {getRelativeTimeString(new Date(poll.closingDate))}
                     </div>
                   {:else}
                     <span class="opacity-50">---</span>
                   {/if}
                 </td>
-                <td>
+                <td class="py-3 px-4">
                   {#if $currentUser?.id === poll.owner}
                     {#if poll.audience.length}
-                      {(
-                        (answers.length / (questions.length * poll.audience.length)) *
-                        100
-                      ).toFixed(2)}%
+                      <span class="badge badge-primary">
+                        {(
+                          (answers.length / (questions.length * poll.audience.length)) *
+                          100
+                        ).toFixed(2)}%
+                      </span>
                     {:else}
-                      0%
+                      <span class="badge badge-secondary">0%</span>
                     {/if}
                   {/if}
                 </td>
-                <td>
+                <td class="py-3 px-4 text-right space-x-2">
                   {#if poll.owner === $currentUser?.id}
-                    <a href="{poll.id}/edit" class="btn btn-primary btn-xs hover:text-white">Editar</a>
+                    <a
+                      href="{poll.id}/edit"
+                      class="btn btn-primary btn-xs text-sm font-medium rounded-lg hover:bg-blue-600"
+                    >
+                      Editar
+                    </a>
                   {/if}
-
-                  <a href={poll.id} class="btn btn-ghost btn-xs hover:text-white">detalhes</a>
+                  <a
+                    href={poll.id}
+                    class="btn btn-outline btn-xs text-sm font-medium rounded-lg hover:text-blue-600"
+                  >
+                    detalhes
+                  </a>
                 </td>
               </tr>
               {#if showAudienceCount[poll.id]}
                 <tr>
-                  <td colspan="6" class="text-center text-gray-600">
+                  <td colspan="6" class="py-3 px-4 text-center text-gray-600 bg-gray-50">
                     Número de convidados: {poll.audience.length}
                   </td>
                 </tr>
@@ -96,4 +110,5 @@
       </div>
     </div>
   </div>
+  
 </PageGrid>
